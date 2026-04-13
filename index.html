@@ -1369,7 +1369,22 @@ Services: Basic website $99 (~1 week), Standard $249 (~2 weeks, 3-6 pages, SEO, 
 Contact: your@email.com. Available for: small business websites, web apps, landing pages.
 Be friendly, concise, and helpful. If asked about pricing, give specific numbers. If asked to build something, explain what package fits. Keep responses under 150 words.`;
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:200,system:CONTEXT,messages:[{role:'user',content:msg}]})});
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': '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',   // 🔥 REQUIRED
+    'anthropic-version': '2023-06-01'
+  },
+  body: JSON.stringify({
+    model: 'claude-3-5-sonnet-20241022', // safer current model
+    max_tokens: 200,
+    system: CONTEXT,
+    messages: [
+      { role: 'user', content: msg }
+    ]
+  })
+});
     const data=await res.json();
     typing.remove();
     const reply=data.content?.[0]?.text||"I'm having trouble connecting right now. Please reach out at your@email.com!";
