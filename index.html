@@ -1369,26 +1369,19 @@ Services: Basic website $99 (~1 week), Standard $249 (~2 weeks, 3-6 pages, SEO, 
 Contact: your@email.com. Available for: small business websites, web apps, landing pages.
 Be friendly, concise, and helpful. If asked about pricing, give specific numbers. If asked to build something, explain what package fits. Keep responses under 150 words.`;
   try{
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/.netlify/functions/chat', {
   method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'x-api-key': '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',   // 🔥 REQUIRED
-    'anthropic-version': '2023-06-01'
-  },
-  body: JSON.stringify({
-    model: 'claude-3-5-sonnet-20241022', // safer current model
-    max_tokens: 200,
-    system: CONTEXT,
-    messages: [
-      { role: 'user', content: msg }
-    ]
-  })
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ message: msg })
 });
-    const data=await res.json();
-    typing.remove();
-    const reply=data.content?.[0]?.text||"I'm having trouble connecting right now. Please reach out at your@email.com!";
-    msgs.innerHTML+=`<div class="msg bot">${reply}</div>`;
+
+const data = await res.json();
+
+const reply =
+  data.choices?.[0]?.message?.content ||
+  "I'm having trouble connecting right now.";
+
+msgs.innerHTML += `<div class="msg bot">${reply}</div>`;
   }catch(err){
     typing.remove();
     msgs.innerHTML+=`<div class="msg bot">I'm having a connection issue. Please email your@email.com directly — I respond within 24 hours!</div>`;
